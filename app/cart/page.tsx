@@ -1,60 +1,84 @@
 "use client";
-
 import { useCart } from "../context/CartContext";
-import Image from "next/image";
-import Link from "next/link";
 
 export default function CartPage() {
-  const { cart, removeFromCart } = useCart();
+  const { cartItems, removeFromCart } = useCart();
 
-  if (cart.length === 0) {
-    return (
-      <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center">
-        <h1 className="text-3xl font-bold mb-4">Your cart is empty</h1>
-        <Link href="/shop">
-          <button className="px-6 py-3 bg-white text-black font-bold rounded hover:opacity-90">
-            Go to Shop
-          </button>
-        </Link>
-      </main>
-    );
-  }
+  const subtotal = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   return (
-    <main className="min-h-screen bg-black text-white px-10 py-20">
-      <h1 className="text-4xl font-bold mb-10">Your Cart</h1>
+    <main style={{ padding: "100px 40px", fontFamily: "'Montserrat', sans-serif" }}>
+      <h1 style={{ fontSize: "2rem", marginBottom: "40px" }}>YOUR CART</h1>
 
-      <div className="space-y-6">
-        {cart.map((item, index) => (
-          <div
-            key={index}
-            className="flex items-center gap-6 border border-white/10 p-4 rounded-lg"
-          >
-            <Image
-              src={item.image}
-              alt={item.name}
-              width={100}
-              height={100}
-              className="object-cover rounded"
-            />
-            <div className="flex-1">
-              <h2 className="text-lg">{item.name}</h2>
-              <p className="text-sm opacity-70">Size: {item.size}</p>
-              <p className="text-sm opacity-70">Price: ₹{item.price}</p>
-            </div>
-            <button
-              className="bg-red-600 px-4 py-2 rounded hover:opacity-90"
-              onClick={() => removeFromCart(index)}
+      {cartItems.length === 0 ? (
+        <p>Your cart is empty.</p>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          {cartItems.map((item, index) => (
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                background: "rgba(255,255,255,0.05)",
+                padding: "16px",
+                borderRadius: "12px",
+              }}
             >
-              Remove
-            </button>
-          </div>
-        ))}
-      </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  style={{ width: "80px", height: "80px", objectFit: "contain" }}
+                />
+                <div>
+                  <p style={{ fontWeight: 600 }}>{item.name}</p>
+                  <p>Size: {item.size}</p>
+                  <p>Qty: {item.quantity}</p>
+                  <p>Price: ₹{item.price * item.quantity}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => removeFromCart(item.id)}
+                style={{
+                  padding: "8px 16px",
+                  background: "white",
+                  color: "black",
+                  borderRadius: "999px",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                REMOVE
+              </button>
+            </div>
+          ))}
 
-      <div className="mt-10 text-right text-xl font-bold">
-        Total: ₹{cart.reduce((sum, item) => sum + item.price, 0)}
-      </div>
+          <div style={{ marginTop: "32px", fontWeight: 600, fontSize: "1.2rem" }}>
+            Subtotal: ₹{subtotal}
+          </div>
+
+          <button
+            style={{
+              marginTop: "16px",
+              padding: "16px",
+              width: "200px",
+              borderRadius: "999px",
+              border: "none",
+              background: "white",
+              color: "black",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            PLACE ORDER
+          </button>
+        </div>
+      )}
     </main>
   );
 }

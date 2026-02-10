@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
 
@@ -8,18 +7,57 @@ export default function ShopPage() {
   const { addToCart } = useCart();
 
   const products = [
-    { name: "Tam Leon Tee", price: 799, image: "/tam-leon-tee.png", slug: "tam-leon-tee" },
-    { name: "Porsche Tee", price: 699, image: "/porsche-tee.png", slug: "porsche-tee" },
-    { name: "Skull Tee", price: 599, image: "/skull-tee.png", slug: "skull-tee" },
-  ];
+  {
+    id: 1,
+    name: "Porsche-tee",
+    price: 699,
+    image: "/porsche-tee.png", // <-- updated
+  },
+  {
+    id: 2,
+    name: "Skull-tee",
+    price: 599,
+    image: "/skull-tee.png", // <-- updated
+  },
+  {
+    id: 3,
+    name: "Tam-leon-tee",
+    price: 799,
+    image: "/tam-leon-tee.png", // <-- updated
+  },
+];
 
   return (
-    <main className="min-h-screen bg-black text-white px-10 py-20">
-      <h1 className="text-4xl font-bold mb-10">Shop</h1>
+    <main
+      style={{
+        minHeight: "100vh",
+        padding: "100px 40px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "60px",
+        backgroundColor: "#111",
+        color: "white",
+        fontFamily: "'Montserrat', sans-serif",
+      }}
+    >
+      <h1 style={{ fontSize: "3rem", letterSpacing: "4px" }}>SHOP</h1>
 
-      <div className="grid md:grid-cols-3 gap-10">
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: "40px",
+          width: "100%",
+          maxWidth: "1200px",
+        }}
+      >
         {products.map((product) => (
-          <ProductCard key={product.slug} product={product} addToCart={addToCart} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            addToCart={addToCart}
+          />
         ))}
       </div>
     </main>
@@ -27,54 +65,112 @@ export default function ShopPage() {
 }
 
 function ProductCard({ product, addToCart }: any) {
-  const [size, setSize] = useState("M"); // default size
-  const [added, setAdded] = useState(false);
+  const [size, setSize] = useState("M");
 
   const handleAddToCart = () => {
-    addToCart({ ...product, size });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1000); // flash effect for 1 second
+    addToCart({ ...product, size, quantity: 1 });
   };
 
   return (
-    <div className="border border-white/10 p-6 rounded-lg cursor-pointer hover:border-white transition transform hover:scale-105 relative">
-      <Image
-        src={product.image}
-        alt={product.name}
-        width={500}
-        height={500}
-        className="mb-4 object-cover rounded"
-      />
-      <h2 className="text-lg tracking-wide">{product.name}</h2>
-      <p className="text-sm opacity-70 mt-1">₹{product.price}</p>
+    <div
+      style={{
+        background: "rgba(255,255,255,0.04)",
+        borderRadius: "18px",
+        padding: "24px",
+        textAlign: "center",
+        backdropFilter: "blur(6px)",
+        transition: "transform 0.3s ease, boxShadow 0.3s ease",
+        cursor: "pointer",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-6px)";
+        e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.4)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "none";
+      }}
+    >
+      {/* IMAGE */}
+      <div style={{ pointerEvents: "none" }}>
+        <img
+          src={product.image}
+          alt={product.name}
+          style={{
+            width: "100%",
+            maxWidth: "260px",
+            height: "320px",
+            objectFit: "contain",
+            margin: "0 auto 18px",
+          }}
+        />
+      </div>
 
-      {/* Sizes */}
-      <div className="flex gap-2 mt-3 mb-4">
+      {/* NAME */}
+      <h3
+        style={{
+          letterSpacing: "2px",
+          fontSize: "15px",
+          marginBottom: "6px",
+        }}
+      >
+        {product.name.toUpperCase()}
+      </h3>
+
+      {/* PRICE */}
+      <p style={{ opacity: 0.8, marginBottom: "16px" }}>₹{product.price}</p>
+
+      {/* SIZE SELECTION */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+          marginBottom: "18px",
+        }}
+      >
         {["S", "M", "L", "XL"].map((s) => (
           <button
             key={s}
-            className={`px-3 py-1 border rounded font-semibold ${
-              size === s
-                ? "border-white bg-white text-black"
-                : "border-white/20 text-white/80"
-            }`}
             onClick={() => setSize(s)}
+            style={{
+              width: "34px",
+              height: "34px",
+              borderRadius: "50%",
+              border: "1px solid white",
+              background: size === s ? "white" : "transparent",
+              color: size === s ? "black" : "white",
+              cursor: "pointer",
+              fontWeight: 600,
+            }}
           >
             {s}
           </button>
         ))}
       </div>
 
+      {/* ADD TO CART BUTTON */}
       <button
-        className="mt-2 w-full bg-white text-black px-6 py-2 font-bold tracking-widest hover:opacity-90 relative overflow-hidden"
         onClick={handleAddToCart}
+        style={{
+          width: "100%",
+          padding: "12px",
+          borderRadius: "999px",
+          border: "none",
+          background: "white",
+          color: "black",
+          letterSpacing: "2px",
+          cursor: "pointer",
+          fontWeight: 600,
+        }}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.backgroundColor = "#e0e0e0")
+        }
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.backgroundColor = "white")
+        }
       >
-        Add to Cart
-        {added && (
-          <span className="absolute inset-0 flex items-center justify-center text-white font-bold bg-black/50 animate-ping rounded">
-            ✓ Added
-          </span>
-        )}
+        ADD TO CART
       </button>
     </div>
   );

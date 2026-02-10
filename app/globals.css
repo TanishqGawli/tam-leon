@@ -1,26 +1,241 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ===============================
+   GLOBAL RESET
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ===============================
+   BODY – FABRIC TEXTURE LOOK
+================================ */
+body {
+  font-family: "Montserrat", sans-serif;
+  color: #ffffff;
+  min-height: 100vh;
+
+  background-color: #0b0b0b;
+
+  /* Fabric grain + depth */
+  background-image:
+    radial-gradient(
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      135deg,
+      #0b0b0b 0%,
+      #141414 35%,
+      #0a0a0a 70%,
+      #000000 100%
+    );
+
+  background-size: 3px 3px, 100% 100%;
+  background-attachment: fixed;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ===============================
+   CENTER ALL PAGE CONTENT
+================================ */
+.page-wrapper {
+  min-height: calc(100vh - 90px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+/* ===============================
+   HEADINGS – STREETWEAR LOOK
+================================ */
+h1, h2, h3 {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ===============================
+   BUTTON STYLE
+================================ */
+button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  padding: 12px 26px;
+  cursor: pointer;
+  letter-spacing: 0.12em;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: white;
+  color: black;
+}
+/* ===== Luxury Page Spacing ===== */
+
+.page-wrapper {
+  min-height: calc(100vh - 80px); /* navbar space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 1.5rem;
+}
+
+/* Content container inside pages */
+.page-wrapper > div {
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Headings */
+.page-wrapper h1 {
+  font-size: clamp(2.8rem, 5vw, 4rem);
+  letter-spacing: 0.15em;
+  margin-bottom: 2rem;
+}
+
+/* Subtext / paragraphs */
+.page-wrapper p {
+  font-size: 1.1rem;
+  line-height: 2.1;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+  margin-bottom: 2.5rem;
+}
+
+/* Buttons (if any) */
+.page-wrapper a,
+.page-wrapper button {
+  margin-top: 2rem;
+}
+
+/* About & Contact text blocks */
+.page-wrapper section,
+.page-wrapper article {
+  margin-top: 3rem;
+}
+
+/* Mobile spacing */
+@media (max-width: 768px) {
+  .page-wrapper {
+    padding: 4rem 1.2rem;
+  }
+
+  .page-wrapper h1 {
+    letter-spacing: 0.12em;
   }
 }
+/* ===== Contact Page ===== */
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.contact-links {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.contact-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.6rem;
+  letter-spacing: 0.25em;
+  transition: all 0.4s ease;
+}
+
+.contact-links a span {
+  display: block;
+  margin-top: 0.8rem;
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  opacity: 0.7;
+}
+
+/* Hover effect (luxury feel) */
+.contact-links a:hover {
+  transform: translateY(-4px);
+  opacity: 0.85;
+}
+/* ===== About Page ===== */
+
+.about-page {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.about-intro {
+  text-align: center;
+  margin-bottom: 6rem;
+}
+
+.about-intro h1 {
+  font-size: 3rem;
+  letter-spacing: 0.35em;
+  margin-bottom: 2.5rem;
+}
+
+.about-intro p {
+  max-width: 700px;
+  margin: 0 auto 1.8rem;
+  font-size: 1.1rem;
+  line-height: 1.9;
+  opacity: 0.85;
+}
+
+/* Images section */
+.about-images {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.about-image {
+  text-align: center;
+}
+
+.about-image img {
+  border-radius: 6px;
+}
+
+/* Image captions */
+.caption {
+  margin-top: 1.2rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  opacity: 0.6;
+}
+
+/* Outro text */
+.about-outro {
+  margin-top: 7rem;
+  text-align: center;
+}
+
+.about-outro p {
+  font-size: 1.3rem;
+  letter-spacing: 0.25em;
+  opacity: 0.9;
+}
+/* SHOP PRODUCT HOVER EFFECT */
+
+.product-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2px);
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+}
+
+/* Image refinement on hover */
+.product-card img {
+  transition: filter 0.4s ease;
+}
+
+.product-card:hover img {
+  filter: contrast(1.05) brightness(1.05);
 }

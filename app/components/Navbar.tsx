@@ -4,35 +4,122 @@ import Link from "next/link";
 import { useCart } from "../context/CartContext";
 
 export default function Navbar() {
-  const { cart } = useCart();
+  const cart = useCart();
+  const cartItems = cart?.cartItems || [];
 
   return (
-    <nav className="sticky top-0 z-50 w-full flex justify-between items-center px-10 py-4 bg-black text-white border-b border-white/10 backdrop-blur-md">
-      {/* Logo / Brand */}
-      <Link href="/">
-        <h1 className="text-2xl font-bold tracking-wide">TAM LEON</h1>
+    <nav
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        padding: "28px 48px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        zIndex: 100,
+        background: "transparent",
+      }}
+    >
+      {/* LOGO */}
+      <Link href="/" style={{ textDecoration: "none" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            lineHeight: 1,
+          }}
+        >
+          {/* TL MONOGRAM */}
+          <span
+            style={{
+              fontSize: "26px",
+              fontWeight: 800,
+              letterSpacing: "2px",
+              color: "#ffffff",
+            }}
+          >
+            TL
+          </span>
+
+          {/* BRAND NAME */}
+          <span
+            style={{
+              fontSize: "12px",
+              letterSpacing: "3px",
+              marginTop: "6px",
+              opacity: 0.85,
+              color: "#ffffff",
+            }}
+          >
+            TAM LEON
+          </span>
+        </div>
       </Link>
 
-      {/* Links */}
-      <div className="flex gap-6 items-center">
-        <Link href="/">Home</Link>
-        <Link href="/shop">Shop</Link>
-        <Link href="/about">About</Link>
-        <Link href="/contact">Contact</Link>
+      {/* NAV LINKS */}
+      <div
+        style={{
+          display: "flex",
+          gap: "40px",
+          fontSize: "14px",
+          letterSpacing: "2px",
+        }}
+      >
+        <NavLink href="/shop">SHOP</NavLink>
+        <NavLink href="/about">ABOUT</NavLink>
+        <NavLink href="/contact">CONTACT</NavLink>
 
-        {/* Cart button */}
-        <Link href="/cart" className="relative">
-          <button className="px-4 py-2 bg-white text-black font-bold rounded hover:opacity-90">
-            Cart
-          </button>
-
-          {cart.length > 0 && (
-            <span className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center animate-pulse">
-              {cart.length}
+        <Link
+          href="/cart"
+          style={{
+            position: "relative",
+            textDecoration: "none",
+            color: "#ffffff",
+          }}
+        >
+          CART
+          {cartItems.length > 0 && (
+            <span
+              style={{
+                position: "absolute",
+                top: "-8px",
+                right: "-14px",
+                background: "#ffffff",
+                color: "#000",
+                borderRadius: "50%",
+                fontSize: "10px",
+                padding: "2px 6px",
+                fontWeight: 600,
+              }}
+            >
+              {cartItems.length}
             </span>
           )}
         </Link>
       </div>
     </nav>
+  );
+}
+
+/* SIMPLE LINK COMPONENT */
+function NavLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      style={{
+        textDecoration: "none",
+        color: "#ffffff",
+      }}
+    >
+      {children}
+    </Link>
   );
 }

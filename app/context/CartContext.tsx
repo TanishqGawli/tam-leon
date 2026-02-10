@@ -1,37 +1,54 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState } from "react";
 
-type CartItem = {
+interface CartItem {
+  id: number;
   name: string;
-  size: string;
   price: number;
+  size: string;
+  quantity: number;
   image: string;
-};
+}
 
-type CartContextType = {
-  cart: CartItem[];
+interface CartContextType {
+  cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
-  removeFromCart: (index: number) => void;
-};
+  removeFromCart: (id: number) => void;
+}
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
+
+export const CartProvider = ({ children }: { children: React.ReactNode }) => {
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  const addToCart = (item: CartItem) => {
+    setCartItems((prev) => {
+      const existingIndex = prev.findIndex(
+        (p) => p.id === item.id && p.size === item.size
+      );
+      if (existingIndex >= 0) {
+        const updated = [...prev];
+        updated[existingIndex].quantity += item.quantity;
+        return updated;
+      }
+      return [...prev, item];
+    });
+  };
+
+  const removeFromCart = (id: number) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  return (
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>
+      {children}
+    </CartContext.Provider>
+  );
+};
 
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) throw new Error("useCart must be used within CartProvider");
   return context;
-};
-
-export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
-
-  const addToCart = (item: CartItem) => setCart((prev) => [...prev, item]);
-  const removeFromCart = (index: number) => setCart((prev) => prev.filter((_, i) => i !== index));
-
-  return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
-      {children}
-    </CartContext.Provider>
-  );
 };

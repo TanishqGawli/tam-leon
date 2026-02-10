@@ -1,31 +1,27 @@
-import Navbar from "./components/Navbar";
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { CartProvider } from "./context/CartContext"; // Make sure path is correct
+import Navbar from "./components/Navbar";
+import { CartProvider } from "./context/CartContext";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
+export const metadata = {
   title: "TAM LEON",
-  description: "Streetwear brand website",
+  description: "We don’t sell t-shirts. We sell art.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body className="bg-black text-white">
+      <body>
         <CartProvider>
           <Navbar />
-          {children}
+
+          {/* ✅ GLOBAL CENTERED CONTENT */}
+          <main className="page-wrapper">
+            {children}
+          </main>
         </CartProvider>
       </body>
     </html>
