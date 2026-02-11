@@ -16,7 +16,7 @@ export default function ShopPage() {
     <main
       style={{
         minHeight: "100vh",
-        padding: "100px 20px", // reduced horizontal padding for mobiles
+        padding: "100px 20px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -26,15 +26,15 @@ export default function ShopPage() {
         fontFamily: "'Montserrat', sans-serif",
       }}
     >
-      <h1 style={{ fontSize: "3rem", letterSpacing: "4px" }}>SHOP</h1>
+      <h1 style={{ fontSize: "3rem", letterSpacing: "4px", textAlign: "center" }}>SHOP</h1>
 
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", // <=== fixed for mobile
-          gap: "20px",
+          gap: "40px",
           width: "100%",
           maxWidth: "1200px",
+          gridTemplateColumns: "1fr", // default: vertical stack
         }}
       >
         {products.map((product) => (
@@ -62,7 +62,7 @@ function ProductCard({ product, addToCart }: any) {
         backdropFilter: "blur(6px)",
         transition: "transform 0.3s ease, boxShadow 0.3s ease",
         cursor: "pointer",
-        boxSizing: "border-box", // <=== ensures padding doesn’t break layout
+        boxSizing: "border-box",
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "translateY(-6px)";

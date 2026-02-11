@@ -1,52 +1,63 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 
-interface CartItem {
+type CartItem = {
   id: number;
   name: string;
   price: number;
+  image: string;
   size: string;
   quantity: number;
-  image: string;
-}
+};
 
-interface CartContextType {
+type CartContextType = {
   cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
-  removeFromCart: (id: number) => void;
-}
+  removeFromCart: (id: number, size: string) => void;
+  clearCart: () => void;
+};
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider = ({ children }: { children: React.ReactNode }) => {
+export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const addToCart = (item: CartItem) => {
-    setCartItems((prev) => {
-      const existingIndex = prev.findIndex(
-        (p) => p.id === item.id && p.size === item.size
+    setCartItems((prevItems) => {
+      // Check if the item with the same id and size already exists
+      const existingItemIndex = prevItems.findIndex(
+        (i) => i.id === item.id && i.size === item.size
       );
-      if (existingIndex >= 0) {
-        const updated = [...prev];
-        updated[existingIndex].quantity += item.quantity;
-        return updated;
+
+      if (existingItemIndex >= 0) {
+        // If exists, increase quantity
+        const updatedItems = [...prevItems];
+        updatedItems[existingItemIndex].quantity += item.quantity;
+        return updatedItems;
+      } else {
+        // Otherwise, add new item
+        return [...prevItems, item];
       }
-      return [...prev, item];
     });
   };
 
-  const removeFromCart = (id: number) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  const removeFromCart = (id: number, size: string) => {
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => !(item.id === id && item.size === size))
+    );
   };
 
+  const clearCart = () => setCartItems([]);
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
 };
 
+// Hook to use cart in components
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) throw new Error("useCart must be used within CartProvider");

@@ -4,19 +4,38 @@ import { useCart } from "../context/CartContext";
 export default function CartPage() {
   const { cartItems, removeFromCart } = useCart();
 
+  // calculate subtotal
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
   return (
-    <main style={{ padding: "100px 40px", fontFamily: "'Montserrat', sans-serif" }}>
-      <h1 style={{ fontSize: "2rem", marginBottom: "40px" }}>YOUR CART</h1>
+    <main
+      style={{
+        padding: "100px 20px",
+        fontFamily: "'Montserrat', sans-serif",
+        minHeight: "100vh",
+        backgroundColor: "#111",
+        color: "white",
+      }}
+    >
+      <h1 style={{ fontSize: "2rem", marginBottom: "40px", textAlign: "center" }}>
+        YOUR CART
+      </h1>
 
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <p style={{ textAlign: "center" }}>Your cart is empty.</p>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+            maxWidth: "800px",
+            margin: "0 auto",
+          }}
+        >
           {cartItems.map((item, index) => (
             <div
               key={index}
@@ -27,6 +46,7 @@ export default function CartPage() {
                 background: "rgba(255,255,255,0.05)",
                 padding: "16px",
                 borderRadius: "12px",
+                flexWrap: "wrap",
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -42,8 +62,9 @@ export default function CartPage() {
                   <p>Price: ₹{item.price * item.quantity}</p>
                 </div>
               </div>
+
               <button
-                onClick={() => removeFromCart(item.id)}
+                onClick={() => removeFromCart(item.id, item.size)} // <-- pass size too
                 style={{
                   padding: "8px 16px",
                   background: "white",
@@ -51,6 +72,7 @@ export default function CartPage() {
                   borderRadius: "999px",
                   border: "none",
                   cursor: "pointer",
+                  marginTop: "10px",
                 }}
               >
                 REMOVE
@@ -58,10 +80,19 @@ export default function CartPage() {
             </div>
           ))}
 
-          <div style={{ marginTop: "32px", fontWeight: 600, fontSize: "1.2rem" }}>
+          {/* Subtotal */}
+          <div
+            style={{
+              marginTop: "32px",
+              fontWeight: 600,
+              fontSize: "1.2rem",
+              textAlign: "right",
+            }}
+          >
             Subtotal: ₹{subtotal}
           </div>
 
+          {/* PLACE ORDER button */}
           <button
             style={{
               marginTop: "16px",
@@ -73,7 +104,10 @@ export default function CartPage() {
               color: "black",
               fontWeight: 600,
               cursor: "pointer",
+              display: "block",
+              marginLeft: "auto",
             }}
+            onClick={() => alert("Order placed successfully!")} // temporary action
           >
             PLACE ORDER
           </button>
