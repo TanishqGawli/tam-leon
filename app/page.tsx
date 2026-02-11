@@ -1,29 +1,27 @@
-import Link from "next/link";
-
-export default function Home() {
+export default function HomePage() {
   return (
-    <main className="min-h-screen bg-black text-white">
-      <section className="h-screen flex flex-col items-center justify-center text-center space-y-6">
-        <h1 className="text-6xl font-extrabold tracking-widest">TAM LEON</h1>
-        <p className="mt-6 text-xl tracking-wide">
-          WE DON'T SELL T-SHIRTS. WE SELL ART.
-        </p>
+    <main
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        padding: "100px 24px",
+        gap: "40px",
+        backgroundImage: "url('/hero-bg.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <h1 style={{ fontSize: "42px", fontWeight: 800, color: "#fff", maxWidth: "90%" }}>
+        TAM LEON STREETWEAR
+      </h1>
 
-        {/* Buttons */}
-        <div className="flex gap-6 mt-8">
-          <Link href="/shop">
-            <button className="bg-white text-black px-8 py-3 font-bold rounded-lg hover:opacity-90 transition">
-              Shop Now
-            </button>
-          </Link>
-
-          <Link href="/about">
-            <button className="border border-white px-8 py-3 font-bold rounded-lg hover:bg-white hover:text-black transition">
-              About
-            </button>
-          </Link>
-        </div>
-      </section>
+      <p style={{ fontSize: "18px", color: "#fff", maxWidth: "600px", lineHeight: "1.8", opacity: 0.9 }}>
+        Handcrafted, artistic streetwear that carries soul, effort, and identity.
+      </p>
     </main>
   );
 }

@@ -7,31 +7,16 @@ export default function ShopPage() {
   const { addToCart } = useCart();
 
   const products = [
-  {
-    id: 1,
-    name: "Porsche-tee",
-    price: 699,
-    image: "/porsche-tee.png", // <-- updated
-  },
-  {
-    id: 2,
-    name: "Skull-tee",
-    price: 599,
-    image: "/skull-tee.png", // <-- updated
-  },
-  {
-    id: 3,
-    name: "Tam-leon-tee",
-    price: 799,
-    image: "/tam-leon-tee.png", // <-- updated
-  },
-];
+    { id: 1, name: "Porsche-tee", price: 699, image: "/porsche-tee.png" },
+    { id: 2, name: "Skull-tee", price: 599, image: "/skull-tee.png" },
+    { id: 3, name: "Tam-leon-tee", price: 799, image: "/tam-leon-tee.png" },
+  ];
 
   return (
     <main
       style={{
         minHeight: "100vh",
-        padding: "100px 40px",
+        padding: "100px 20px", // reduced horizontal padding for mobiles
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -46,18 +31,14 @@ export default function ShopPage() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: "40px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", // <=== fixed for mobile
+          gap: "20px",
           width: "100%",
           maxWidth: "1200px",
         }}
       >
         {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            addToCart={addToCart}
-          />
+          <ProductCard key={product.id} product={product} addToCart={addToCart} />
         ))}
       </div>
     </main>
@@ -81,6 +62,7 @@ function ProductCard({ product, addToCart }: any) {
         backdropFilter: "blur(6px)",
         transition: "transform 0.3s ease, boxShadow 0.3s ease",
         cursor: "pointer",
+        boxSizing: "border-box", // <=== ensures padding doesn’t break layout
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "translateY(-6px)";
@@ -91,7 +73,6 @@ function ProductCard({ product, addToCart }: any) {
         e.currentTarget.style.boxShadow = "none";
       }}
     >
-      {/* IMAGE */}
       <div style={{ pointerEvents: "none" }}>
         <img
           src={product.image}
@@ -106,29 +87,13 @@ function ProductCard({ product, addToCart }: any) {
         />
       </div>
 
-      {/* NAME */}
-      <h3
-        style={{
-          letterSpacing: "2px",
-          fontSize: "15px",
-          marginBottom: "6px",
-        }}
-      >
+      <h3 style={{ letterSpacing: "2px", fontSize: "15px", marginBottom: "6px" }}>
         {product.name.toUpperCase()}
       </h3>
 
-      {/* PRICE */}
       <p style={{ opacity: 0.8, marginBottom: "16px" }}>₹{product.price}</p>
 
-      {/* SIZE SELECTION */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "10px",
-          marginBottom: "18px",
-        }}
-      >
+      <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "18px" }}>
         {["S", "M", "L", "XL"].map((s) => (
           <button
             key={s}
@@ -149,7 +114,6 @@ function ProductCard({ product, addToCart }: any) {
         ))}
       </div>
 
-      {/* ADD TO CART BUTTON */}
       <button
         onClick={handleAddToCart}
         style={{
@@ -163,12 +127,8 @@ function ProductCard({ product, addToCart }: any) {
           cursor: "pointer",
           fontWeight: 600,
         }}
-        onMouseEnter={(e) =>
-          (e.currentTarget.style.backgroundColor = "#e0e0e0")
-        }
-        onMouseLeave={(e) =>
-          (e.currentTarget.style.backgroundColor = "white")
-        }
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#e0e0e0")}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}
       >
         ADD TO CART
       </button>
